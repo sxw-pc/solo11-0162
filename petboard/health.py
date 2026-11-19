@@ -20,6 +20,8 @@ def decide(db, animal_id):
             result = ('rejected', 'animal identity or veterinarian signature invalid', None)
         elif top['vaccine_until'] < animal['departure']:
             result = ('rejected', 'vaccine expires during boarding', None)
+        elif db.execute("SELECT 1 FROM certificate_revocation WHERE certificate_id=? AND signed_by='veterinarian'", (top['event_id'],)).fetchone():
+            result = ('revoked', 'veterinarian revoked certificate', None)
         elif animal['requested_medicine'] in json.loads(top['contraindications']):
             result = ('rejected', 'requested medicine conflicts with veterinarian contraindication', None)
         else:
@@ -47,5 +49,13 @@ def import_data(db, data):
                 db.execute('INSERT INTO health_certificate(event_id,animal_id,version,chip,signed_by,vaccine_until,contraindications,condition) VALUES(?,?,?,?,?,?,?,?)',
                            (value['event_id'], value['animal_id'], value['version'], value['chip'], value['signed_by'], value['vaccine_until'],
                             json.dumps(value.get('contraindications', []), ensure_ascii=False), value.get('condition', 'healthy')))
+            touched.add(value['animal_id'])
+        for value in data.get('revocations', []):
+            certificate = db.execute('SELECT animal_id FROM health_certificate WHERE event_id=?', (value['certificate_id'],)).fetchone()
+            if not certificate or certificate['animal_id'] != value['animal_id']:
+                raise ValueError('revocation must identify existing certificate and animal')
+            if record(db, value['event_id'], 'revocation', value):
+                db.execute('INSERT INTO certificate_revocation(event_id,certificate_id,animal_id,at,signed_by,reason) VALUES(?,?,?,?,?,?)',
+                           (value['event_id'], value['certificate_id'], value['animal_id'], value['at'], value['signed_by'], value['reason']))
             touched.add(value['animal_id'])
         return [decide(db, animal_id) for animal_id in sorted(touched)]

@@ -56,6 +56,15 @@ class BoardingCase(unittest.TestCase):
         self.assertEqual(self.state('care_decision')['state'], 'blocked')
         self.assertNotEqual(self.state('handoff_decision')['state'], 'settled')
 
+    def test_veterinarian_revocation_retracts_settlement(self):
+        self.normal()
+        feed(self.db, 'intake-import', {'revocations': [{'event_id': 'revoke-1', 'certificate_id': 'cert-1',
+            'animal_id': 'chip-101', 'at': '2026-11-03', 'signed_by': 'veterinarian', 'reason': 'invalid lot'}]})
+        self.assertEqual(self.state('intake_decision')['state'], 'revoked')
+        self.assertEqual(self.state('care_decision')['state'], 'blocked')
+        self.assertNotEqual(self.state('handoff_decision')['state'], 'settled')
+        self.assertEqual(audit(self.db)['status'], 'matched')
+
     def test_requested_medicine_contraindication(self):
         value = fixture('intake_ok.json')
         value['animals'][0]['requested_medicine'] = 'drug-x'
@@ -87,6 +96,25 @@ class BoardingCase(unittest.TestCase):
         feed(self.db, 'care-import', data)
         self.assertEqual(self.state('care_decision')['state'], 'disputed')
 
+    def test_missing_prescribed_medicine_is_partial(self):
+        feed(self.db, 'intake-import', fixture('intake_ok.json'))
+        data = fixture('care_ok.json')
+        data['actions'] = [data['actions'][0]]
+        feed(self.db, 'care-import', data)
+        self.assertEqual(self.state('care_decision')['state'], 'partial')
+
+    def test_late_action_correction_reopens_care_and_fee(self):
+        self.normal()
+        correction = {'actions': [{'event_id': 'meal-corrected', 'animal_id': 'chip-101',
+                                   'plan_id': 'plan-1', 'kind': 'meal', 'day': '2026-11-02',
+                                   'actor': 'nurse-a', 'witness': None, 'food': 'chicken',
+                                   'supersedes': 'meal-1'}]}
+        feed(self.db, 'care-import', correction)
+        self.assertEqual(self.state('care_decision')['compensation'], 200)
+        self.assertEqual(self.state('handoff_decision')['payable_fee'], 4300)
+        self.assertEqual(self.db.execute("SELECT amount FROM fee_line WHERE kind='care_credit'").fetchone()[0], -200)
+        self.assertEqual(audit(self.db)['status'], 'matched')
+
     def test_missed_meal_creates_compensation(self):
         feed(self.db, 'intake-import', fixture('intake_ok.json'))
         data = fixture('care_ok.json')
@@ -109,6 +137,37 @@ class BoardingCase(unittest.TestCase):
                                'person': 'picker-a', 'witness': 'staff-b', 'condition': 'cough'}]}
         feed(self.db, 'handoff-import', value)
         self.assertEqual(self.state('handoff_decision')['state'], 'disputed')
+        self.assertEqual(self.db.execute('SELECT state FROM injury_case').fetchone()[0], 'unverified')
+
+    def test_documented_new_illness_still_requires_responsibility_review(self):
+        self.normal()
+        feed(self.db, 'handoff-import', {'handoffs': [{'event_id': 'handoff-6', 'animal_id': 'chip-101',
+            'at': '2026-11-05', 'person': 'picker-a', 'witness': 'staff-b', 'condition': 'cough',
+            'veterinarian': 'vet-review-a'}]})
+        self.assertEqual(self.state('handoff_decision')['state'], 'disputed')
+        self.assertEqual(self.db.execute('SELECT state FROM injury_case').fetchone()[0], 'documented')
+
+    def test_independent_injury_resolution_releases_frozen_fee(self):
+        self.normal()
+        feed(self.db, 'handoff-import', {'handoffs': [{'event_id': 'handoff-6', 'animal_id': 'chip-101',
+            'at': '2026-11-05', 'person': 'picker-a', 'witness': 'staff-b', 'condition': 'cough',
+            'veterinarian': 'vet-review-a'}]})
+        self.assertEqual(self.state('handoff_decision')['state'], 'disputed')
+        feed(self.db, 'handoff-import', {'resolutions': [{'event_id': 'resolution-1', 'animal_id': 'chip-101',
+            'handoff_id': 'handoff-6', 'veterinarian': 'vet-review-b', 'owner': 'owner-a',
+            'decision': 'preexisting', 'rationale': 'intake evidence review'}]})
+        self.assertEqual(self.state('handoff_decision')['state'], 'settled')
+        self.assertEqual(self.db.execute('SELECT state FROM injury_case').fetchone()[0], 'cleared')
+        self.assertEqual(audit(self.db)['status'], 'matched')
+
+    def test_self_approved_injury_resolution_keeps_dispute(self):
+        self.normal()
+        feed(self.db, 'handoff-import', {'handoffs': [{'event_id': 'handoff-6', 'animal_id': 'chip-101',
+            'at': '2026-11-05', 'person': 'picker-a', 'witness': 'staff-b', 'condition': 'cough'}]})
+        feed(self.db, 'handoff-import', {'resolutions': [{'event_id': 'resolution-2', 'animal_id': 'chip-101',
+            'handoff_id': 'handoff-6', 'veterinarian': 'owner-a', 'owner': 'owner-a',
+            'decision': 'preexisting', 'rationale': 'self approval attempt'}]})
+        self.assertEqual(self.state('handoff_decision')['state'], 'disputed')
 
     def test_overdue_fee_and_disputed_fee_are_separate(self):
         self.normal()
@@ -122,6 +181,7 @@ class BoardingCase(unittest.TestCase):
         feed(self.db, 'handoff-import', value)
         self.assertEqual(self.state('handoff_decision')['state'], 'disputed')
         self.assertEqual(self.state('handoff_decision')['payable_fee'], 0)
+        self.assertTrue(all(r[0] for r in self.db.execute('SELECT frozen FROM fee_line')))
 
     def test_idempotent_replay_and_conflicting_id(self):
         value = fixture('intake_ok.json')
