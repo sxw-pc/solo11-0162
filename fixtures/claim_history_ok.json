@@ -1,0 +1,1 @@
+{"exposures":[{"event_id":"exp-2026-08","month":"2026-08","animal_days":120},{"event_id":"exp-2026-09","month":"2026-09","animal_days":150}],"claims":[{"event_id":"claim-aug-1","incurred_month":"2026-08","reported_month":"2026-08","paid_cents":30000},{"event_id":"claim-aug-2","incurred_month":"2026-08","reported_month":"2026-09","paid_cents":20000}]}
