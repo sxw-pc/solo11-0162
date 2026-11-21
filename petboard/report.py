@@ -14,7 +14,10 @@ def report(db):
         item['injury_case'] = dict(injury) if injury else None
         item['injury_resolutions'] = [dict(row) for row in db.execute('SELECT * FROM injury_resolution WHERE animal_id=? ORDER BY event_id', (animal['id'],))]
         animals.append(item)
-    return {'animals': animals, 'evidence_count': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0],
+    return {'animals': animals,
+            'booking_days': [dict(row) for row in db.execute('SELECT * FROM booking_decision ORDER BY day')],
+            'demand_days': [dict(row) for row in db.execute('SELECT * FROM demand_decision ORDER BY day')],
+            'evidence_count': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0],
             'source_files': [dict(row) for row in db.execute('SELECT kind,sha FROM file_journal ORDER BY id')]}
 
 

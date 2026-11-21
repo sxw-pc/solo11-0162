@@ -1,0 +1,1 @@
+{"slots":[{"event_id":"slot-1","day":"2026-11-07","capacity":2}],"intents":[{"event_id":"b-1","day":"2026-11-07","visitor":"v-1","price":180,"status":"confirmed"},{"event_id":"b-2","day":"2026-11-07","visitor":"v-2","price":180,"status":"confirmed"}]}
