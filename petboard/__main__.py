@@ -1,7 +1,7 @@
 import argparse
 import json
 from pathlib import Path
-from . import health, care, handoff
+from . import health, care, handoff, kennel
 from .report import dumps, report
 from .source import file_record
 from .store import connect
@@ -9,7 +9,7 @@ from .store import connect
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='petboard')
-    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'report', 'audit', 'demo'])
+    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'kennel-import', 'report', 'audit', 'demo'])
     parser.add_argument('--db', required=True)
     parser.add_argument('--file')
     args = parser.parse_args(argv)
@@ -38,7 +38,7 @@ def run_import(db, command, raw):
     data = json.loads(raw)
     file_record(db, command, raw)
     importer = {'intake-import': health.import_data, 'care-import': care.import_data,
-                'handoff-import': handoff.import_data}[command]
+                'handoff-import': handoff.import_data, 'kennel-import': kennel.import_data}[command]
     return importer(db, data)
 
 

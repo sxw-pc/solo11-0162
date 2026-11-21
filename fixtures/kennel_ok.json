@@ -1,0 +1,1 @@
+{"units":[{"event_id":"unit-k1","id":"K-1","zone":"standard","capacity":2}],"placements":[{"event_id":"place-1","animal_id":"chip-101","unit_id":"K-1","starts":"2026-11-01","ends":"2026-11-04","actor":"keeper-a"}]}

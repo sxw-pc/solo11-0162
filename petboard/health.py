@@ -33,6 +33,8 @@ def decide(db, animal_id):
     care_decide(db, animal_id)
     from .handoff import decide as handoff_decide
     handoff_decide(db, animal_id)
+    from .kennel import decide as kennel_decide
+    kennel_decide(db, animal_id)
     return answer
 
 
