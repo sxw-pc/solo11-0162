@@ -25,3 +25,7 @@ python -m petboard handoff-import --db state.sqlite --file fixtures/handoff_ok.j
 接收检查芯片、兽医签署、疫苗覆盖、申请药物禁忌及后续证书撤销；护理检查计划批准、食谱和药物禁忌、独立给药见证、漏餐补偿与更正事件；交还检查领回授权、独立见证、伤病差异、独立责任复核、逾期费用和争议冻结。`fee_line` 保留结算项目及所依据的合同，伤病争议在 `injury_case` 中留状态。三个子系统以动物身份与有效版本联结，但每个都能独立采录、产生自己的待核状态。
 
 本项目只使用合成数据与离线签署标签。兽医签署、身份核验和付款均为本地证据模拟，不连接真实机构。
+
+## 物业边界噪声采录
+
+`noise-import` 收边界声级计离线读数，`complaint-import` 收相邻物业的投诉。`acoustic.py` 目前只取时段内最大 dB 与固定阈值比较，`complaint.py` 按该结论把投诉判 upheld/dismissed/pending。独立的 noise_decision、complaint_decision、原包和 report/audit 可查；`fixtures/noise_case.json` 与 `fixtures/complaint_case.json` 可复现。音源归属、室外传播和持续暴露剂量尚未处理。

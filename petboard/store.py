@@ -18,6 +18,10 @@ CREATE TABLE IF NOT EXISTS injury_resolution(event_id TEXT PRIMARY KEY, animal_i
 CREATE TABLE IF NOT EXISTS fee_line(animal_id TEXT NOT NULL, kind TEXT NOT NULL, amount INTEGER NOT NULL, basis TEXT NOT NULL, frozen INTEGER NOT NULL, PRIMARY KEY(animal_id,kind));
 CREATE TABLE IF NOT EXISTS handoff_decision(animal_id TEXT PRIMARY KEY, state TEXT NOT NULL, reason TEXT NOT NULL, overdue_fee INTEGER NOT NULL, frozen_fee INTEGER NOT NULL, payable_fee INTEGER NOT NULL, version INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS decision_history(id INTEGER PRIMARY KEY, subsystem TEXT NOT NULL, animal_id TEXT NOT NULL, version INTEGER NOT NULL, state TEXT NOT NULL, reason TEXT NOT NULL, evidence_id TEXT, at TEXT DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS noise_sample(event_id TEXT PRIMARY KEY, period TEXT NOT NULL, sensor TEXT NOT NULL, at TEXT NOT NULL, db REAL NOT NULL);
+CREATE TABLE IF NOT EXISTS noise_decision(period TEXT PRIMARY KEY, state TEXT NOT NULL, reason TEXT NOT NULL, peak_db REAL NOT NULL, version INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS neighbor_complaint(event_id TEXT PRIMARY KEY, period TEXT NOT NULL, claimant TEXT NOT NULL, address TEXT NOT NULL, claim TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS complaint_decision(period TEXT PRIMARY KEY, state TEXT NOT NULL, reason TEXT NOT NULL, complaint_count INTEGER NOT NULL, version INTEGER NOT NULL);
 """
 
 

@@ -14,7 +14,16 @@ def report(db):
         item['injury_case'] = dict(injury) if injury else None
         item['injury_resolutions'] = [dict(row) for row in db.execute('SELECT * FROM injury_resolution WHERE animal_id=? ORDER BY event_id', (animal['id'],))]
         animals.append(item)
-    return {'animals': animals, 'evidence_count': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0],
+    periods = sorted({row['period'] for row in db.execute('SELECT period FROM noise_sample')} | {row['period'] for row in db.execute('SELECT period FROM neighbor_complaint')})
+    noise_cases = []
+    for period in periods:
+        noise = db.execute('SELECT * FROM noise_decision WHERE period=?', (period,)).fetchone()
+        complaint = db.execute('SELECT * FROM complaint_decision WHERE period=?', (period,)).fetchone()
+        noise_cases.append({'period': period, 'noise': dict(noise) if noise else None,
+                            'complaint': dict(complaint) if complaint else None,
+                            'samples': [dict(row) for row in db.execute('SELECT * FROM noise_sample WHERE period=? ORDER BY at,event_id', (period,))],
+                            'complaints': [dict(row) for row in db.execute('SELECT * FROM neighbor_complaint WHERE period=? ORDER BY event_id', (period,))]})
+    return {'animals': animals, 'noise_cases': noise_cases, 'evidence_count': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0],
             'source_files': [dict(row) for row in db.execute('SELECT kind,sha FROM file_journal ORDER BY id')]}
 
 
