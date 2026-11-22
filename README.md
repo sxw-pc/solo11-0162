@@ -28,4 +28,8 @@ python -m petboard handoff-import --db state.sqlite --file fixtures/handoff_ok.j
 
 ## 物业边界噪声采录
 
-`noise-import` 收边界声级计离线读数，`complaint-import` 收相邻物业的投诉。`acoustic.py` 目前只取时段内最大 dB 与固定阈值比较，`complaint.py` 按该结论把投诉判 upheld/dismissed/pending。独立的 noise_decision、complaint_decision、原包和 report/audit 可查；`fixtures/noise_case.json` 与 `fixtures/complaint_case.json` 可复现。音源归属、室外传播和持续暴露剂量尚未处理。
+`noise-import` 收声级计离线包：设备身份、校准、地点、统一采样窗（10 分钟网格）、频谱摘要与原始文件摘要，以及录音片段索引（声纹分类）、道路背景观测和停场/屏障对照试验。`complaint-import` 收相邻物业投诉；`remediation-import` 收整改措施与现场复测。
+
+`acoustic.py` 在边界点与庭院点的统一时窗上按能量单位计算等效连续声级（Leq），声压叠加与背景扣除一律用能量单位，不做 dB 算术相减。归责分两级证据：可比（风况与道路背景相近）的停场/屏障对照试验为决定性证据；否则用同步声纹、庭院—边界传播路径与道路背景做被动分离。两个同频来源同时混入时被动观测不能唯一确定店源剂量，时段判 `uncertain`，投诉保持 `pending` 并生成可执行的停场/屏障对照试验计划；不同气象条件下的静音片段不作为反证。无有效隔离试验时不能靠最高峰或事后挑选录音判 upheld。
+
+投诉决定列出被采用的时窗、店源剂量、背景扣除依据与不确定部分。投诉成立后，整改验收必须落在已确认的店源路径上，措施必须是已安装/已执行（拟建围挡不算），现场复测店源剂量达标后，`business_scope` 才发布可承诺的室外活动时段（如围挡路线开放至 21:00，或停场路线 20:00 后关闭室外活动而寄养继续）；各路线证据独立，投诉发生时的责任保留在 `noise_history`。`fixtures/` 内含货车短峰、犬吠持续、相关两源、可比/不可比停场试验与两条整改路线的完整可重放案例，`report`/`audit` 可复核。

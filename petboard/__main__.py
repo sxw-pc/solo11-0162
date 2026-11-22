@@ -9,7 +9,7 @@ from .store import connect
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='petboard')
-    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'noise-import', 'complaint-import', 'report', 'audit', 'demo'])
+    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'noise-import', 'complaint-import', 'remediation-import', 'report', 'audit', 'demo'])
     parser.add_argument('--db', required=True)
     parser.add_argument('--file')
     args = parser.parse_args(argv)
@@ -39,7 +39,7 @@ def run_import(db, command, raw):
     file_record(db, command, raw)
     importer = {'intake-import': health.import_data, 'care-import': care.import_data,
                 'handoff-import': handoff.import_data, 'noise-import': acoustic.import_data,
-                'complaint-import': complaint.import_data}[command]
+                'complaint-import': complaint.import_data, 'remediation-import': complaint.import_remediation}[command]
     return importer(db, data)
 
 

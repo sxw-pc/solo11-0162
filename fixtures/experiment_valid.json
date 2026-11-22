@@ -1,0 +1,1 @@
+{"experiments":[{"event_id":"exp-shut-ok","period":"2026-11-02-evening","kind":"shutdown","path":"boundary-west","baseline_window":"2026-11-02T20:00:00/2026-11-02T20:10:00","control_window":"2026-11-03T20:00:00/2026-11-03T20:10:00","baseline_db":68.0,"control_db":62.0,"baseline_background_db":61.5,"control_background_db":61.8,"baseline_wind":"calm","control_wind":"calm"}]}
