@@ -35,6 +35,8 @@ def decide(db, animal_id):
     handoff_decide(db, animal_id)
     from .kennel import decide as kennel_decide
     kennel_decide(db, animal_id)
+    from .booking import replan
+    replan(db)
     return answer
 
 

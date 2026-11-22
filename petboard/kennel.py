@@ -11,13 +11,21 @@ def decide(db, animal_id):
         place = rows[0]
         unit_id = place['unit_id']
         unit = db.execute('SELECT * FROM kennel_unit WHERE id=?', (unit_id,)).fetchone()
-        peers = db.execute('SELECT COUNT(*) FROM kennel_placement WHERE unit_id=? AND animal_id<>? AND starts<? AND ends>?',
-                           (unit_id, animal_id, place['ends'], place['starts'])).fetchone()[0]
+        overlap = db.execute('SELECT * FROM kennel_placement WHERE unit_id=? AND starts<? AND ends>? ORDER BY starts,event_id',
+                             (unit_id, place['ends'], place['starts'])).fetchall()
+        double = db.execute('SELECT 1 FROM kennel_placement WHERE animal_id=? AND event_id<>? AND starts<? AND ends>?',
+                            (animal_id, place['event_id'], place['ends'], place['starts'])).fetchone()
+        points = sorted({p['starts'] for p in overlap} | {p['ends'] for p in overlap})
+        peak = 0
+        for s, e in zip(points, points[1:]):
+            peak = max(peak, len({p['animal_id'] for p in overlap if p['starts'] < e and s < p['ends']}))
         if not unit:
             state, reason = 'blocked', 'kennel unit missing'
         elif not intake or intake['state'] != 'accepted':
             state, reason = 'blocked', 'intake qualification not accepted'
-        elif peers >= unit['capacity']:
+        elif double:
+            state, reason = 'conflict', 'animal placed in two kennels at the same time'
+        elif peak > unit['capacity']:
             state, reason = 'conflict', 'kennel capacity exceeded'
         else:
             state, reason = 'placed', 'accepted animal within kennel capacity'
@@ -39,4 +47,7 @@ def import_data(db, data):
                 db.execute('INSERT INTO kennel_placement(event_id,animal_id,unit_id,starts,ends,actor) VALUES(?,?,?,?,?,?)',
                            (value['event_id'], value['animal_id'], value['unit_id'], value['starts'], value['ends'], value['actor']))
             touched.add(value['animal_id'])
-        return [decide(db, animal_id) for animal_id in sorted(touched)]
+        results = [decide(db, animal_id) for animal_id in sorted(touched)]
+        from .booking import replan
+        replan(db)
+        return results

@@ -1,0 +1,1 @@
+{"units":[{"event_id":"bk-unit-k1","id":"K1","zone":"standard","capacity":3},{"event_id":"bk-unit-k2","id":"K2","zone":"standard","capacity":2}],"placements":[{"event_id":"bk-place-d","animal_id":"chip-D","unit_id":"K2","starts":"2026-11-20","ends":"2026-11-23","actor":"keeper-a"}]}

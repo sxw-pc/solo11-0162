@@ -20,6 +20,13 @@ CREATE TABLE IF NOT EXISTS handoff_decision(animal_id TEXT PRIMARY KEY, state TE
 CREATE TABLE IF NOT EXISTS kennel_unit(id TEXT PRIMARY KEY, zone TEXT NOT NULL, capacity INTEGER NOT NULL);
 CREATE TABLE IF NOT EXISTS kennel_placement(event_id TEXT PRIMARY KEY, animal_id TEXT NOT NULL, unit_id TEXT NOT NULL, starts TEXT NOT NULL, ends TEXT NOT NULL, actor TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS kennel_decision(animal_id TEXT PRIMARY KEY, state TEXT NOT NULL, reason TEXT NOT NULL, unit_id TEXT, version INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_group(id TEXT PRIMARY KEY, owner TEXT NOT NULL, split_authorized INTEGER NOT NULL, signed_by TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_member(event_id TEXT PRIMARY KEY, group_id TEXT NOT NULL, animal_id TEXT NOT NULL, arrival TEXT NOT NULL, departure TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_constraint(event_id TEXT PRIMARY KEY, kind TEXT NOT NULL, animal_a TEXT NOT NULL, animal_b TEXT NOT NULL, signed_by TEXT NOT NULL, reason TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_handover(event_id TEXT PRIMARY KEY, animal_id TEXT NOT NULL, at TEXT NOT NULL, actor TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_plan(id INTEGER PRIMARY KEY, on_time INTEGER NOT NULL, intact_groups INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_plan_group(plan_id INTEGER NOT NULL, group_id TEXT NOT NULL, status TEXT NOT NULL, detail TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS booking_plan_item(plan_id INTEGER NOT NULL, group_id TEXT NOT NULL, animal_id TEXT NOT NULL, status TEXT NOT NULL, unit_id TEXT, starts TEXT, ends TEXT, detail TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS decision_history(id INTEGER PRIMARY KEY, subsystem TEXT NOT NULL, animal_id TEXT NOT NULL, version INTEGER NOT NULL, state TEXT NOT NULL, reason TEXT NOT NULL, evidence_id TEXT, at TEXT DEFAULT CURRENT_TIMESTAMP);
 """
 

@@ -28,3 +28,18 @@ python -m petboard kennel-import --db state.sqlite --file fixtures/kennel_ok.jso
 本项目只使用合成数据与离线签署标签。兽医签署、身份核验和付款均为本地证据模拟，不连接真实机构。
 
 隔离增强副本还提供笼位采录：`kennel-import` 接收笼位和占用时间，`kennel_decision` 当前只按接收资格与单笼容量作基础判定。晚到的兽医证据会重算该动物的笼位判定；目前没有跨动物接触追踪或异常隔离流程。
+
+## 整店寄养方案（booking）
+
+`booking-import` 采录预约组、必须同笼/必须隔离约束、时段换笼交接人和主人拆组授权：
+
+```powershell
+python -m petboard intake-import --db weekend.sqlite --file fixtures/booking_intake.json
+python -m petboard kennel-import --db weekend.sqlite --file fixtures/booking_kennel.json
+python -m petboard booking-import --db weekend.sqlite --file fixtures/booking_ok.json
+python -m petboard report --db weekend.sqlite
+python -m petboard audit --db weekend.sqlite
+python -m petboard intake-import --db weekend.sqlite --file fixtures/booking_revoked.json
+```
+
+求解规则：已入笼动物的占用记录不可被新预约挤走；未通过接收资格的动物撤出可执行候选，同组其余动物按主人书面拆组授权决定能否单独入住；容量按每个时间段同时占用核对；换笼要求起止两侧都有容量且有交接人，同一动物不会同时出现在两个笼位。结果保留 Pareto 未受支配方案（按期入住动物数、保持同组完整数两项指标，不设全店统一偏好），每个预约组标记完整入住（full）/按授权拆组（split）/延后（delayed）/不可安排（unschedulable），并列出每只动物的笼位、时间段和未满足的约束。接收资格变化（如证书撤销）会通过 health → kennel → booking 联动重算方案，audit 可从源文件复建。
