@@ -1,0 +1,35 @@
+SYNTHETIC-PETBOARD-CLIP
+clip_id=clip-road
+recorded_at=2026-11-03T09:00:00
+frame_count=15
+rfid-chip-101 gate=0 t=0ms
+rfid-chip-101 gate=1 t=8000ms
+rfid-chip-101 gate=2 t=16000ms
+rfid-chip-101 gate=0 t=24000ms
+rfid-chip-101 gate=1 t=32000ms
+rfid-chip-101 gate=2 t=40000ms
+rfid-chip-101 gate=0 t=48000ms
+rfid-chip-101 gate=1 t=56000ms
+rfid-chip-101 gate=2 t=64000ms
+rfid-chip-101 gate=0 t=72000ms
+rfid-chip-101 gate=1 t=80000ms
+rfid-chip-101 gate=2 t=88000ms
+rfid-chip-101 gate=0 t=96000ms
+rfid-chip-101 gate=1 t=104000ms
+rfid-chip-101 gate=2 t=112000ms
+sector-1-0 t=0ms
+sector-1-1 t=8000ms
+sector-1-2 t=16000ms
+sector-1-3 t=24000ms
+sector-1-0 t=32000ms
+sector-1-1 t=40000ms
+sector-1-2 t=48000ms
+sector-1-3 t=56000ms
+sector-1-0 t=64000ms
+sector-1-1 t=72000ms
+sector-1-2 t=80000ms
+sector-1-3 t=88000ms
+sector-1-0 t=96000ms
+sector-1-1 t=104000ms
+sector-1-2 t=112000ms
+{"clip_id": "clip-road", "frame_count": 15, "frame_ms": 8000, "frames": [{"frame": 0, "location": "sector-1-0", "offset_ms": 0, "rfid": "rfid-chip-101-gate-0"}, {"frame": 1, "location": "sector-1-1", "offset_ms": 8000, "rfid": "rfid-chip-101-gate-1"}, {"frame": 2, "location": "sector-1-2", "offset_ms": 16000, "rfid": "rfid-chip-101-gate-2"}, {"frame": 3, "location": "sector-1-3", "offset_ms": 24000, "rfid": "rfid-chip-101-gate-0"}, {"frame": 4, "location": "sector-1-0", "offset_ms": 32000, "rfid": "rfid-chip-101-gate-1"}, {"frame": 5, "location": "sector-1-1", "offset_ms": 40000, "rfid": "rfid-chip-101-gate-2"}, {"frame": 6, "location": "sector-1-2", "offset_ms": 48000, "rfid": "rfid-chip-101-gate-0"}, {"frame": 7, "location": "sector-1-3", "offset_ms": 56000, "rfid": "rfid-chip-101-gate-1"}, {"frame": 8, "location": "sector-1-0", "offset_ms": 64000, "rfid": "rfid-chip-101-gate-2"}, {"frame": 9, "location": "sector-1-1", "offset_ms": 72000, "rfid": "rfid-chip-101-gate-0"}, {"frame": 10, "location": "sector-1-2", "offset_ms": 80000, "rfid": "rfid-chip-101-gate-1"}, {"frame": 11, "location": "sector-1-3", "offset_ms": 88000, "rfid": "rfid-chip-101-gate-2"}, {"frame": 12, "location": "sector-1-0", "offset_ms": 96000, "rfid": "rfid-chip-101-gate-0"}, {"frame": 13, "location": "sector-1-1", "offset_ms": 104000, "rfid": "rfid-chip-101-gate-1"}, {"frame": 14, "location": "sector-1-2", "offset_ms": 112000, "rfid": "rfid-chip-101-gate-2"}], "note": "synthetic replayable index; burst frames share one recall attempt and are not independent trials"}

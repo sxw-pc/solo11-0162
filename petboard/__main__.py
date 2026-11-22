@@ -9,9 +9,11 @@ from .store import connect
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='petboard')
-    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'training-import', 'report', 'audit', 'demo'])
+    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'training-import', 'training-verify', 'report', 'audit', 'demo'])
     parser.add_argument('--db', required=True)
     parser.add_argument('--file')
+    parser.add_argument('--clip-root', help='local directory holding the indexed raw video clips')
+    parser.add_argument('--animal')
     args = parser.parse_args(argv)
     db = connect(args.db)
     try:
@@ -20,6 +22,11 @@ def main(argv=None):
             return
         if args.command == 'audit':
             print(json.dumps(audit(db), ensure_ascii=False, indent=2))
+            return
+        if args.command == 'training-verify':
+            if not args.clip_root:
+                parser.error('--clip-root is required for training-verify')
+            print(json.dumps({'clip_checks': training.verify_clips(db, args.clip_root, args.animal)}, ensure_ascii=False, indent=2))
             return
         if args.command == 'demo':
             root = Path(__file__).parent.parent / 'fixtures'
