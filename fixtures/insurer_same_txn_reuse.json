@@ -1,0 +1,1 @@
+{"transfers":[{"event_id":"transfer-reuse-1","claim_id":"claim-direct","transaction_id":"txn-direct-insurer-1","payer":"insurer-alpha","payee":"owner-a","amount":1000,"at":"2026-11-05T12:00","status":"settled","memo":"same bank line booked a second time in the other direction"}]}

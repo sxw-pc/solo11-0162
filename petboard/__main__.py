@@ -1,7 +1,7 @@
 import argparse
 import json
 from pathlib import Path
-from . import health, care, handoff
+from . import health, care, handoff, medical_claim, insurer_import
 from .report import dumps, report
 from .source import file_record
 from .store import connect
@@ -9,7 +9,8 @@ from .store import connect
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='petboard')
-    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'report', 'audit', 'demo'])
+    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'claim-import',
+                                            'insurer-import', 'report', 'audit', 'demo'])
     parser.add_argument('--db', required=True)
     parser.add_argument('--file')
     args = parser.parse_args(argv)
@@ -23,7 +24,8 @@ def main(argv=None):
             return
         if args.command == 'demo':
             root = Path(__file__).parent.parent / 'fixtures'
-            for command, filename in [('intake-import', 'intake_ok.json'), ('care-import', 'care_ok.json'), ('handoff-import', 'handoff_ok.json')]:
+            for command, filename in [('intake-import', 'intake_ok.json'), ('care-import', 'care_ok.json'),
+                                      ('handoff-import', 'handoff_ok.json')]:
                 run_import(db, command, (root / filename).read_bytes())
             print(dumps(db))
             return
@@ -38,7 +40,8 @@ def run_import(db, command, raw):
     data = json.loads(raw)
     file_record(db, command, raw)
     importer = {'intake-import': health.import_data, 'care-import': care.import_data,
-                'handoff-import': handoff.import_data}[command]
+                'handoff-import': handoff.import_data, 'claim-import': medical_claim.import_data,
+                'insurer-import': insurer_import.import_data}[command]
     return importer(db, data)
 
 

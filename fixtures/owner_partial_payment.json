@@ -1,0 +1,1 @@
+{"transfers":[{"event_id":"transfer-owner-partial-1","claim_id":"claim-reimburse","transaction_id":"txn-owner-partial-1","payer":"owner-a","payee":"hospital-x","amount":500,"at":"2026-11-04T11:30","status":"settled","memo":"partial hospital payment"}]}

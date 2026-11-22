@@ -1,0 +1,1 @@
+{"transfers":[{"event_id":"transfer-owner-final-1","claim_id":"claim-reimburse","transaction_id":"txn-owner-final-1","payer":"owner-a","payee":"hospital-x","amount":700,"at":"2026-11-04T16:00","status":"settled","memo":"remaining hospital balance"}]}

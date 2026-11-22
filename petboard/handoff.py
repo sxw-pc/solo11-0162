@@ -56,8 +56,11 @@ def decide(db, animal_id):
                                     ('care_credit', -compensation, 'missed witnessed meals times service fee')]:
             db.execute('INSERT INTO fee_line(animal_id,kind,amount,basis,frozen) VALUES(?,?,?,?,?)',
                        (animal_id, kind, amount, basis, 1 if state != 'settled' else 0))
-    return update_decision(db, 'handoff_decision', animal_id,
-                           dict(state=state, reason=reason, overdue_fee=overdue, frozen_fee=frozen, payable_fee=payable))
+    result = update_decision(db, 'handoff_decision', animal_id,
+                             dict(state=state, reason=reason, overdue_fee=overdue, frozen_fee=frozen, payable_fee=payable))
+    from .medical_claim import decide_by_animal as claim_decide
+    claim_decide(db, animal_id)
+    return result
 
 
 def import_data(db, data):

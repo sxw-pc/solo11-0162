@@ -1,0 +1,1 @@
+{"transfers":[{"event_id":"transfer-early-ins-1","claim_id":"claim-reimburse","transaction_id":"txn-early-ins-1","payer":"insurer-alpha","payee":"owner-a","amount":1000,"at":"2026-11-05T13:00","status":"settled","memo":"reimbursement received before owner settled hospital balance"}]}
