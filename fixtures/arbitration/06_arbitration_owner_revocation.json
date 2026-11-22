@@ -1,0 +1,5 @@
+{
+  "arbitration_revocations": [
+    {"event_id": "arb-revoke-1", "arbitration_id": "arb-owner-m2", "animal_id": "chip-101", "at": "2026-11-05T09:30", "signed_by": "owner-a", "reason": "owner withdraws acknowledgement pending staff recount"}
+  ]
+}

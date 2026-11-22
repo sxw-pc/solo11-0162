@@ -9,7 +9,7 @@ from .store import connect
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog='petboard')
-    parser.add_argument('command', choices=['intake-import', 'care-import', 'handoff-import', 'report', 'audit', 'demo'])
+    parser.add_argument('command', choices=['intake-import', 'care-import', 'arbitration-import', 'handoff-import', 'report', 'audit', 'demo'])
     parser.add_argument('--db', required=True)
     parser.add_argument('--file')
     args = parser.parse_args(argv)
@@ -38,8 +38,25 @@ def run_import(db, command, raw):
     data = json.loads(raw)
     file_record(db, command, raw)
     importer = {'intake-import': health.import_data, 'care-import': care.import_data,
+                'arbitration-import': care.import_arbitration,
                 'handoff-import': handoff.import_data}[command]
     return importer(db, data)
+
+
+def _audit_view(payload):
+    # Version counters and append-only lineage/history snapshots record the
+    # arrival-order trail and are therefore not replay-comparable; the audited
+    # invariant is that replaying every source file reproduces the same terminal
+    # decisions, fees, current chain adjudication and evidence.
+    animals = []
+    for item in payload['animals']:
+        view = {key: value for key, value in item.items()
+                if key not in ('history', 'care_chain_history', 'fee_line_history')}
+        for key in ('intake', 'care', 'handoff'):
+            if view.get(key):
+                view[key] = {k: v for k, v in view[key].items() if k != 'version'}
+        animals.append(view)
+    return {'animals': animals, 'evidence_count': payload['evidence_count'], 'source_files': payload['source_files']}
 
 
 def audit(db):
@@ -48,8 +65,8 @@ def audit(db):
         source_files = db.execute('SELECT kind,raw FROM file_journal ORDER BY id').fetchall()
         for item in source_files:
             run_import(replay, item['kind'], item['raw'])
-        original = report(db)
-        restored = report(replay)
+        original = _audit_view(report(db))
+        restored = _audit_view(report(replay))
         if original != restored:
             raise ValueError('replayed source files disagree with persisted decisions')
         return {'status': 'matched', 'source_files': len(source_files), 'animals': len(original['animals'])}

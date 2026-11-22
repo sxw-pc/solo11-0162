@@ -1,0 +1,10 @@
+{
+  "plans": [
+    {"event_id": "plan-1", "animal_id": "chip-101", "version": 1, "food": "chicken", "medicine": "drug-a", "meals": 1, "approved_by": "owner"}
+  ],
+  "actions": [
+    {"event_id": "m4-root-meal", "animal_id": "chip-101", "plan_id": "plan-1", "kind": "meal", "day": "2026-11-02", "actor": "nurse-a", "witness": "checker-b", "food": "chicken"},
+    {"event_id": "m5-second-level", "animal_id": "chip-101", "plan_id": "plan-1", "kind": "meal", "day": "2026-11-02", "actor": "nurse-a", "witness": "checker-b", "food": "chicken", "supersedes": "m4-root-meal"},
+    {"event_id": "m6-third-level", "animal_id": "chip-101", "plan_id": "plan-1", "kind": "meal", "day": "2026-11-02", "actor": "nurse-c", "witness": "checker-d", "food": "chicken", "supersedes": "m5-second-level"}
+  ]
+}

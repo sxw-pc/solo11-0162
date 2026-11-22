@@ -1,0 +1,7 @@
+{
+  "actions": [
+    {"event_id": "m2-owner-tip", "animal_id": "chip-101", "plan_id": "plan-1", "kind": "meal", "day": "2026-11-02", "actor": "nurse-a", "witness": "checker-b", "food": "chicken", "supersedes": "m1-original"},
+    {"event_id": "m3-panel-tip", "animal_id": "chip-101", "plan_id": "plan-1", "kind": "meal", "day": "2026-11-02", "actor": "nurse-c", "witness": "checker-d", "food": "bread", "supersedes": "m1-original"},
+    {"event_id": "med-2-corrected", "animal_id": "chip-101", "plan_id": "plan-1", "kind": "medicine", "day": "2026-11-02", "actor": "nurse-a", "witness": "checker-b", "medicine": "drug-a", "supersedes": "med-1-original"}
+  ]
+}

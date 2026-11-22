@@ -1,0 +1,5 @@
+{
+  "correction_revocations": [
+    {"event_id": "revoke-m6", "correction_id": "m6-third-level", "animal_id": "chip-101", "at": "2026-11-03T09:00", "signed_by": "nurse-c", "reason": "third-level correction withdrawn after shift review"}
+  ]
+}

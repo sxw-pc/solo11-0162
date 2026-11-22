@@ -1,0 +1,5 @@
+{
+  "arbitrations": [
+    {"event_id": "arb-owner-m2", "animal_id": "chip-101", "root_id": "m1-original", "decision": "owner_ack", "tip_id": "m2-owner-tip", "signed_by": "owner-a", "at": "2026-11-04T18:00", "rationale": "owner confirms the approved-recipe remedial meal"}
+  ]
+}

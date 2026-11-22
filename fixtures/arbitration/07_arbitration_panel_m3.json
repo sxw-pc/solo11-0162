@@ -1,0 +1,5 @@
+{
+  "arbitrations": [
+    {"event_id": "arb-panel-m3", "animal_id": "chip-101", "root_id": "m1-original", "decision": "panel_ruling", "tip_id": "m3-panel-tip", "signed_by": "nurse-e", "witness": "nurse-f", "at": "2026-11-05T11:00", "rationale": "two independent care witnesses confirm the non-approved-recipe meal was the true end of the chain"}
+  ]
+}

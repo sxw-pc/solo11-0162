@@ -1,0 +1,8 @@
+{
+  "authorities": [
+    {"event_id": "auth-1", "animal_id": "chip-101", "person": "picker-a", "valid_from": "2026-11-01", "valid_to": "2026-11-10", "signed_by": "owner-a"}
+  ],
+  "handoffs": [
+    {"event_id": "handoff-1", "animal_id": "chip-101", "at": "2026-11-04", "person": "picker-a", "witness": "staff-b", "condition": "healthy"}
+  ]
+}
