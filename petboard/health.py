@@ -13,7 +13,7 @@ def decide(db, animal_id):
     else:
         top = rows[0]
         parallels = [r for r in rows if r['version'] == top['version']]
-        content = {(r['chip'], r['vaccine_until'], r['contraindications'], r['condition']) for r in parallels}
+        content = {(r['chip'], r['vaccine_until'], r['contraindications'], r['condition'], r['shot_id']) for r in parallels}
         if len(content) > 1:
             result = ('frozen', 'parallel health version conflict', None)
         elif top['chip'] != animal_id or top['signed_by'] != 'veterinarian':
@@ -24,6 +24,18 @@ def decide(db, animal_id):
             result = ('revoked', 'veterinarian revoked certificate', None)
         elif animal['requested_medicine'] in json.loads(top['contraindications']):
             result = ('rejected', 'requested medicine conflicts with veterinarian contraindication', None)
+        elif top['shot_id']:
+            shot = db.execute('SELECT * FROM shot_decision WHERE shot_id=?', (top['shot_id'],)).fetchone()
+            if not shot:
+                result = ('review', 'vaccination shot evidence missing', None)
+            elif shot['animal_id'] != animal_id:
+                result = ('rejected', 'vaccination shot belongs to another animal', None)
+            elif shot['state'] == 'invalid':
+                result = ('rejected', 'vaccination dose invalid: ' + shot['reason'], None)
+            elif shot['state'] == 'review':
+                result = ('review', 'vaccination dose under review: ' + shot['reason'], None)
+            else:
+                result = ('accepted', 'identity, veterinarian, vaccine and dose verified', top['event_id'])
         else:
             result = ('accepted', 'identity, veterinarian and vaccine verified', top['event_id'])
     state, reason, certificate_id = result
@@ -46,9 +58,10 @@ def import_data(db, data):
             touched.add(value['id'])
         for value in data.get('certificates', []):
             if record(db, value['event_id'], 'certificate', value):
-                db.execute('INSERT INTO health_certificate(event_id,animal_id,version,chip,signed_by,vaccine_until,contraindications,condition) VALUES(?,?,?,?,?,?,?,?)',
+                db.execute('INSERT INTO health_certificate(event_id,animal_id,version,chip,signed_by,vaccine_until,contraindications,condition,shot_id) VALUES(?,?,?,?,?,?,?,?,?)',
                            (value['event_id'], value['animal_id'], value['version'], value['chip'], value['signed_by'], value['vaccine_until'],
-                            json.dumps(value.get('contraindications', []), ensure_ascii=False), value.get('condition', 'healthy')))
+                            json.dumps(value.get('contraindications', []), ensure_ascii=False), value.get('condition', 'healthy'),
+                            value.get('shot_id', '')))
             touched.add(value['animal_id'])
         for value in data.get('revocations', []):
             certificate = db.execute('SELECT animal_id FROM health_certificate WHERE event_id=?', (value['certificate_id'],)).fetchone()

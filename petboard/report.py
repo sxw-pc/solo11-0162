@@ -13,8 +13,23 @@ def report(db):
         injury = db.execute('SELECT * FROM injury_case WHERE animal_id=?', (animal['id'],)).fetchone()
         item['injury_case'] = dict(injury) if injury else None
         item['injury_resolutions'] = [dict(row) for row in db.execute('SELECT * FROM injury_resolution WHERE animal_id=? ORDER BY event_id', (animal['id'],))]
+        item['vaccination'] = [dict(row) for row in db.execute('SELECT * FROM shot_decision WHERE animal_id=? ORDER BY shot_id', (animal['id'],))]
         animals.append(item)
-    return {'animals': animals, 'evidence_count': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0],
+    vials = []
+    for row in db.execute('SELECT * FROM vial_decision ORDER BY vial_id'):
+        item = dict(row)
+        item['disposition'] = json.loads(item['disposition'])
+        vials.append(item)
+    batches = []
+    for batch in db.execute('SELECT * FROM vaccine_batch ORDER BY batch_id'):
+        item = dict(batch)
+        for field in ('usable', 'administered', 'pending', 'discarded'):
+            item[field] = db.execute(f'SELECT COALESCE(SUM({field}),0) FROM vial_decision '
+                                     'WHERE vial_id IN (SELECT vial_id FROM vaccine_vial WHERE batch_id=?)',
+                                     (batch['batch_id'],)).fetchone()[0]
+        batches.append(item)
+    return {'animals': animals, 'vials': vials, 'batches': batches,
+            'evidence_count': db.execute('SELECT COUNT(*) FROM evidence').fetchone()[0],
             'source_files': [dict(row) for row in db.execute('SELECT kind,sha FROM file_journal ORDER BY id')]}
 
 

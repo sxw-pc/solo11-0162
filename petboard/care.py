@@ -22,7 +22,8 @@ def decide(db, animal_id):
         animal = db.execute('SELECT * FROM animal WHERE id=?', (animal_id,)).fetchone()
         compensation = missed * animal['service_fee'] if animal else 0
         if not intake or intake['state'] != 'accepted':
-            state, reason = 'blocked', 'animal health intake not accepted'
+            state, reason = 'blocked', ('animal health intake under review' if intake and intake['state'] == 'review'
+                                        else 'animal health intake not accepted')
         elif len({(r['food'], r['medicine'], r['meals']) for r in parallels}) > 1:
             state, reason = 'frozen', 'parallel plan version conflict'
         elif plan['approved_by'] != 'owner':
