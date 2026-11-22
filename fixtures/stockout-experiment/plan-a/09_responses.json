@@ -1,0 +1,16 @@
+{
+  "responses": [
+    {"event_id": "rsp-a-v3-sign", "offer_id": "off-a-v3", "visitor": "v-3",
+     "at": "2026-11-07T16:10:00", "response": "signed", "price": 180},
+    {"event_id": "rsp-a-v4-sign", "offer_id": "off-a-v4", "visitor": "v-4",
+     "at": "2026-11-07T16:12:00", "response": "signed", "price": 180},
+    {"event_id": "rsp-a-v5-sign", "offer_id": "off-a-v5", "visitor": "v-5",
+     "at": "2026-11-07T16:15:00", "response": "signed", "price": 180},
+    {"event_id": "rsp-a-v5-withdraw", "offer_id": "off-a-v5", "visitor": "v-5",
+     "at": "2026-11-07T18:00:00", "response": "withdrawn", "price": 180},
+    {"event_id": "rsp-a-v6-decline", "offer_id": "off-a-v6", "visitor": "v-6",
+     "at": "2026-11-07T16:20:00", "response": "declined", "price": 180},
+    {"event_id": "rsp-a-v7-decline", "offer_id": "off-a-v7", "visitor": "v-7",
+     "at": "2026-11-07T16:22:00", "response": "declined", "price": 180}
+  ]
+}

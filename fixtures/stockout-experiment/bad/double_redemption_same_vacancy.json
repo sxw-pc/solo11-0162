@@ -1,0 +1,6 @@
+{
+  "conversions": [
+    {"event_id": "conv-dup-2", "offer_id": "off-b-v4", "vacancy_id": "b-3-cancel",
+     "visitor": "v-4", "day": "2026-11-07", "price": 180, "at": "2026-11-07T17:00:00"}
+  ]
+}

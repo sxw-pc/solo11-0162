@@ -4,7 +4,11 @@ from .source import record
 def decide(db, day):
     slot = db.execute('SELECT capacity FROM booking_slot WHERE day=?', (day,)).fetchone()
     capacity = slot['capacity'] if slot else 0
-    booked = db.execute("SELECT COUNT(*) FROM booking_intent WHERE day=? AND status='confirmed'", (day,)).fetchone()[0]
+    booked_row = db.execute(
+        "SELECT (SELECT COUNT(DISTINCT visitor) FROM booking_intent WHERE day=? AND status='confirmed') "
+        "- (SELECT COUNT(DISTINCT visitor) FROM booking_intent WHERE day=? AND status='cancelled')",
+        (day, day)).fetchone()[0]
+    booked = max(0, booked_row)
     state = 'sold_out' if capacity and booked >= capacity else ('available' if capacity else 'pending')
     db.execute('INSERT INTO booking_decision(day,capacity,booked,state) VALUES(?,?,?,?) '
                'ON CONFLICT(day) DO UPDATE SET capacity=excluded.capacity,booked=excluded.booked,state=excluded.state',

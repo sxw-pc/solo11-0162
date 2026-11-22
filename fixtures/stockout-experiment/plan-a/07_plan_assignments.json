@@ -1,0 +1,19 @@
+{
+  "plans": [
+    {"event_id": "plan-a", "experiment": "exp-waitlist-2026-11-07", "day": "2026-11-07",
+     "plan_kind": "waitlist", "signed_at": "2026-11-07T09:00:00", "budget": 500,
+     "hold_room": true, "auto_convert": true, "valid_hours": 24}
+  ],
+  "assignments": [
+    {"event_id": "asg-a-v3", "experiment": "exp-waitlist-2026-11-07", "visitor": "v-3",
+     "assigned_at": "2026-11-07T09:05:00", "cohort": "waitlist", "sampling_token": "tok-a-v3"},
+    {"event_id": "asg-a-v4", "experiment": "exp-waitlist-2026-11-07", "visitor": "v-4",
+     "assigned_at": "2026-11-07T09:05:00", "cohort": "waitlist", "sampling_token": "tok-a-v4"},
+    {"event_id": "asg-a-v5", "experiment": "exp-waitlist-2026-11-07", "visitor": "v-5",
+     "assigned_at": "2026-11-07T09:05:00", "cohort": "waitlist", "sampling_token": "tok-a-v5"},
+    {"event_id": "asg-a-v6", "experiment": "exp-waitlist-2026-11-07", "visitor": "v-6",
+     "assigned_at": "2026-11-07T09:05:00", "cohort": "waitlist", "sampling_token": "tok-a-v6"},
+    {"event_id": "asg-a-v7", "experiment": "exp-waitlist-2026-11-07", "visitor": "v-7",
+     "assigned_at": "2026-11-07T09:05:00", "cohort": "waitlist", "sampling_token": "tok-a-v7"}
+  ]
+}

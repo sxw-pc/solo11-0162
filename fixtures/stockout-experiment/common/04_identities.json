@@ -1,0 +1,12 @@
+{
+  "identities": [
+    {"event_id": "id-v1", "visitor": "v-1", "consented_at": "2026-11-07T08:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v2", "visitor": "v-2", "consented_at": "2026-11-07T08:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v3", "visitor": "v-3", "consented_at": "2026-11-07T09:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v4", "visitor": "v-4", "consented_at": "2026-11-07T09:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v5", "visitor": "v-5", "consented_at": "2026-11-07T09:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v6", "visitor": "v-6", "consented_at": "2026-11-07T09:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v7", "visitor": "v-7", "consented_at": "2026-11-07T09:00:00", "consent": true, "scope": "stockout-experiment"},
+    {"event_id": "id-v8", "visitor": "v-8", "consented_at": "2026-11-07T15:00:00", "consent": true, "scope": "stockout-experiment"}
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "exposures": [
+    {"event_id": "ex-bad-mismatch", "day": "2026-11-07", "visitor": "v-3",
+     "at": "2026-11-07T10:30:00", "snapshot_id": "snap-1000", "observed": "available"}
+  ]
+}

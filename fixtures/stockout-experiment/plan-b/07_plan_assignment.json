@@ -1,0 +1,12 @@
+{
+  "plans": [
+    {"event_id": "plan-b", "experiment": "exp-instant-2026-11-07", "day": "2026-11-07",
+     "plan_kind": "instant", "signed_at": "2026-11-07T09:00:00", "budget": 500,
+     "hold_room": false, "auto_convert": false, "valid_hours": 24}
+  ],
+  "assignments": [
+    {"event_id": "asg-b-v4", "experiment": "exp-instant-2026-11-07", "visitor": "v-4",
+     "assigned_at": "2026-11-07T09:05:00", "cohort": "instant_offer",
+     "sampling_token": "random-seed-2026-11-07:selected-v4"}
+  ]
+}

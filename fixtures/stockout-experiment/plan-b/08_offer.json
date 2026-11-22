@@ -1,0 +1,8 @@
+{
+  "offers": [
+    {"event_id": "off-b-v4", "experiment": "exp-instant-2026-11-07", "visitor": "v-4",
+     "day": "2026-11-07", "price": 180, "kind": "instant",
+     "valid_from": "2026-11-07T16:00:00", "valid_to": "2026-11-08T16:00:00",
+     "auto_convert": false, "vacancy_id": "b-3-cancel"}
+  ]
+}

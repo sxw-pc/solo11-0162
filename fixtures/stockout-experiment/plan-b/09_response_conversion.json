@@ -1,0 +1,10 @@
+{
+  "responses": [
+    {"event_id": "rsp-b-v4-sign", "offer_id": "off-b-v4", "visitor": "v-4",
+     "at": "2026-11-07T16:05:00", "response": "signed", "price": 180}
+  ],
+  "conversions": [
+    {"event_id": "conv-b-v4", "offer_id": "off-b-v4", "vacancy_id": "b-3-cancel",
+     "visitor": "v-4", "day": "2026-11-07", "price": 180, "at": "2026-11-07T16:08:00"}
+  ]
+}

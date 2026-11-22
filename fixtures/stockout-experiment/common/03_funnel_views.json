@@ -1,0 +1,11 @@
+{
+  "views": [
+    {"event_id": "pv-1", "day": "2026-11-07", "visitor": "v-3", "observed": "sold_out"},
+    {"event_id": "pv-2", "day": "2026-11-07", "visitor": "v-4", "observed": "sold_out"},
+    {"event_id": "pv-3", "day": "2026-11-07", "visitor": "v-5", "observed": "sold_out"},
+    {"event_id": "pv-4", "day": "2026-11-07", "visitor": "v-6", "observed": "sold_out"},
+    {"event_id": "pv-5", "day": "2026-11-07", "visitor": "v-7", "observed": "sold_out"},
+    {"event_id": "pv-6", "day": "2026-11-07", "visitor": "v-6", "observed": "sold_out"},
+    {"event_id": "pv-7", "day": "2026-11-07", "visitor": "v-8", "observed": "available"}
+  ]
+}

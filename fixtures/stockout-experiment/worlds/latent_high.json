@@ -1,0 +1,8 @@
+{
+  "world": "world-high-willingness",
+  "simulation_only": true,
+  "note": "潜在意愿是仿真输入，不是真实采集证据，不允许作为 offer-import 证据入库",
+  "day": "2026-11-07",
+  "price": 180,
+  "willing": {"v-3": true, "v-4": true, "v-5": true, "v-6": true, "v-7": true}
+}

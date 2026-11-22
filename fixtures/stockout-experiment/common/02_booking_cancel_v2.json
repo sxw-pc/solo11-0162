@@ -1,0 +1,5 @@
+{
+  "intents": [
+    {"event_id": "b-3-cancel", "day": "2026-11-07", "visitor": "v-2", "price": 180, "status": "cancelled"}
+  ]
+}

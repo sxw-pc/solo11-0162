@@ -1,0 +1,13 @@
+{
+  "snapshots": [
+    {"event_id": "snap-0930", "day": "2026-11-07", "at": "2026-11-07T09:30:00", "price": 180,
+     "sellable_nights": 2, "page_state": "available", "bookable": 1,
+     "page_file": "snapshot_0930_available.html"},
+    {"event_id": "snap-1000", "day": "2026-11-07", "at": "2026-11-07T10:00:00", "price": 180,
+     "sellable_nights": 0, "page_state": "sold_out", "bookable": 0, "book_now_button": 0,
+     "page_file": "snapshot_1000_soldout.html"},
+    {"event_id": "snap-1530", "day": "2026-11-07", "at": "2026-11-07T15:30:00", "price": 180,
+     "sellable_nights": 1, "page_state": "available", "bookable": 1,
+     "page_file": "snapshot_1530_available.html"}
+  ]
+}
